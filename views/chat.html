@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        .container{
+    padding:30px;
+    margin: 100px auto;
+    background-color: #FFF0F7;
+    max-width: 400px;
+    color: grey;
+    position: relative;
+}
+form{
+    gap: 20px;
+    display:flex;
+    flex-direction: column;
+}
+h1{
+    text-align: center;
+}
+button{
+    padding: 10px;
+   align-content: center;
+   border-radius: 10px;
+   margin-top: 10px;
+    color: darkgray;
+}
+a{
+    margin: 100px auto;
+    border-radius: 21px 50px;
+    background-color: lightpink;
+    max-width: 400px;
+    color: grey;
+}
+    </style>
+
+</head>
+<body>
+    <h1>Private Chat</h1>
+    <script>
+            const ioClient = io()
+            ioClient.on('connect', ()=>{
+                console.log('Successful prviate chat connection')
+            })
+
+            ioClient.on('message', (data) => {
+                    console.log(`Message from Server: ${data}`)
+            })
+
+            ioClient.on('chat_message', (data) => {
+                const container = document.getElementById('container');
+                const msg = `<p><b>${data.clientId}</b>: ${data.message}</p>`;
+                container.innerHTML += msg
+            })
+
+            function sendMessage() {
+                const txtmessage = document.getElementById('message');
+                const data = {
+                    message: txtmessage.value,
+                    datasent: Date()
+                }
+                ioClient.emit('chat_message', data)
+            }
+
+            socket.on('disconnect', function () {
+                    console.log('disconnected');
+            });
+            
+    </script>
+    <a href="/group">Group Chat</a>
+</br> 
+<div class="container">
+        <input type="text" id="message" name="message" placeholder="What would you like to Say" />
+        <button onclick="sendMessage()">Sent Message</button>
+        <h3>Chat History</h3>
+        <div id="container" name="container">
+        
+        </div>
+</div>
+</body>
+</html>

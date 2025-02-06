@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        .container{
+    padding:30px;
+    margin: 100px auto;
+    border-radius: 21px 50px;
+    background-color: #FFF0F7;
+    max-width: 400px;
+    color: grey;
+    position: relative;
+}
+form{
+    gap: 20px;
+    display:flex;
+    flex-direction: column;
+}
+h1{
+    text-align: center;
+}
+button{
+    padding: 10px;
+   align-content: center;
+   border-radius: 10px;
+   margin-top: 10px;
+    color: darkgray;
+}
+a{
+    margin: 100px auto;
+    border-radius: 21px 50px;
+    background-color: lightpink;
+    max-width: 400px;
+    color: grey;
+}
+    </style>
+</head>
+<body>
+    <h1>Chat App</h1>
+    <script>
+        // i need a handle submit input and click to make this work
+
+    </script>
+      <div class="container">
+        <form action="/login" method="POST">
+            <h1>Login</h1>
+            <input type="text" name= "username" placeholder="Username" required>
+            <input type="text" name="password" placeholder="Password" required>
+    
+            <button type="submit" >Log In</button>
+        </form>
+    </div>
+    <a href='/signup'>Sign Up</a>
+</br> 
+
+</body>
+</html>

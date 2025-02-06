@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Chat</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        .container{
+    padding:30px;
+    margin: 100px auto;
+    background-color: #FFF0F7;
+    max-width: 400px;
+    color: grey;
+    position: relative;
+}
+form{
+    gap: 20px;
+    display:flex;
+    flex-direction: column;
+}
+h1{
+    text-align: center;
+}
+button{
+    padding: 10px;
+   align-content: center;
+   border-radius: 10px;
+   margin-top: 10px;
+    color: darkgray;
+}
+    </style>
+</head>
+<body>
+    <script>
+        const ioClient = io()
+
+        ioClient.on('connect', () => {
+            document.getElementById('socketID').innerHTML = ioClient.id;
+        })
+
+        function joinGroup() {
+            const groupRadio = document.querySelector('input[name="group"]:checked');
+            const groupName = groupRadio.value
+            ioClient.emit('join_group', groupName)
+        }
+
+        function leaveGroup() {
+            const groupRadio = document.querySelector('input[name="group"]:checked');
+            const groupName = groupRadio.value
+            ioClient.emit('leave_group', groupName)
+        }
+
+        function sendGroupMessage() {
+            const txtmessage = document.getElementById('message');
+            const message = txtmessage.value
+            const data = {
+                group: document.querySelector('input[name="group"]:checked').value,
+                message
+            }
+            ioClient.emit('group_message', data)
+        }
+
+        ioClient.on('group_message', (data) => {
+            const container = document.getElementById('container');
+            const senderId = data.senderId
+            const message = data.message
+            const msg =  `<p><b>${senderId}:</b>${message}</p>`;
+            container.innerHTML += msg
+        })
+
+    </script>
+     <div class="container">
+    <h4 id="socketID"></h4>
+    <input type="radio" id="group1" name="group" value="devops">Devops<br />
+    <input type="radio" id="group2" name="group" value="cloud computing">Cloud Computing <br />
+    <input type="radio" id="group3" name="group" value="sports">Sports <br />
+    <input type="radio" id="group4" name="group" value="node js">Node js <br />
+    <button onclick="joinGroup()">Join Group</button>
+    <input type="text" id="message" name="message" placeholder="Enter your message" />
+    <button onclick="sendGroupMessage()">Send Message</button>
+    <h3>Previous Chats</h3>
+    <div id="container" name="container">
+    
+    </div>
+    <button onclick="leaveGroup()">Leave Group</button>
+</body>
+</html>
